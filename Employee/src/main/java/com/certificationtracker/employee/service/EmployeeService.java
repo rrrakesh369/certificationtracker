@@ -12,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -42,21 +39,53 @@ public class EmployeeService {
     }
 
     public List<EmpResponse> getAllEmployee(CertificationStatus status) {
-      Optional<Employee> optionalEmployee= employeeRepository.findByStatus(status);
-      if(optionalEmployee.isEmpty()){
-        log.info("Status not found");
-        return Collections.emptyList();
-      }
-     Employee employee= optionalEmployee.get();
-      if(employee.getStatus()==CertificationStatus.ACTIVE){
-         EmpResponse empResponse= new EmpResponse();
-         empResponse.setEmployeeId(employee.getEmployeeId());
-          empResponse.setIssuedDate(employee.getIssuedDate().atStartOfDay());
-          empResponse.setExpiryDate(employee.getExpiryDate().atStartOfDay());
-         empResponse.setCertificationName(employee.getCertificationName());
-         empResponse.setStatus(employee.getStatus());
-         return List.of(empResponse);
-      }
-      return Collections.emptyList();
+
+        List<Employee> employees =
+                employeeRepository.findByStatus(status);
+
+        if (employees.isEmpty()) {
+            log.info("Status not found");
+            return Collections.emptyList();
+        }
+
+        List<EmpResponse> responseList = new ArrayList<>();
+
+        for (Employee employee : employees) {
+
+            if (employee.getStatus() == CertificationStatus.ACTIVE) {
+
+                EmpResponse empResponse = new EmpResponse();
+
+                empResponse.setEmployeeId(employee.getEmployeeId());
+
+                empResponse.setIssuedDate(employee.getIssuedDate().atStartOfDay());
+
+                empResponse.setExpiryDate(employee.getExpiryDate().atStartOfDay());
+
+                empResponse.setCertificationName(employee.getCertificationName());
+
+                empResponse.setStatus(employee.getStatus());
+
+                responseList.add(empResponse);
+            }
+        }
+
+        return responseList;
+    }
+
+    public EmpResponse getEmployeeById(String id) {
+       Optional<Employee> employee= employeeRepository.findByEmployeeId(id);
+       if(employee.isEmpty()){
+           log.info("Employee is not Available");
+       }
+      Employee employee1= employee.get();
+
+        EmpResponse empResponse= new EmpResponse();
+        empResponse.setEmployeeId(employee1.getEmployeeId());
+        empResponse.setIssuedDate(employee1.getIssuedDate().atStartOfDay());
+        empResponse.setExpiryDate(employee1.getExpiryDate().atStartOfDay());
+        empResponse.setCertificationName(employee1.getCertificationName());
+        empResponse.setStatus(employee1.getStatus());
+        return empResponse;
     }
 }
