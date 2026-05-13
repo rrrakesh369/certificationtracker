@@ -5,12 +5,17 @@ import com.certificationtracker.dto.response.EmpResponse;
 import com.certificationtracker.employee.Entity.Employee;
 import com.certificationtracker.employee.Repository.EmployeeRepository;
 import com.certificationtracker.employee.mapper.EmployeeMapper;
+import com.certificationtracker.utils.CertificationStatus;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -34,5 +39,24 @@ public class EmployeeService {
             employeeRepository.save(employee);
             log.info("Employee {} is save", employee.getEmployeeId());
             return EmployeeMapper.toResponse(employee);
+    }
+
+    public List<EmpResponse> getAllEmployee(CertificationStatus status) {
+      Optional<Employee> optionalEmployee= employeeRepository.findByStatus(status);
+      if(optionalEmployee.isEmpty()){
+        log.info("Status not found");
+        return Collections.emptyList();
+      }
+     Employee employee= optionalEmployee.get();
+      if(employee.getStatus()==CertificationStatus.ACTIVE){
+         EmpResponse empResponse= new EmpResponse();
+         empResponse.setEmployeeId(employee.getEmployeeId());
+          empResponse.setIssuedDate(employee.getIssuedDate().atStartOfDay());
+          empResponse.setExpiryDate(employee.getExpiryDate().atStartOfDay());
+         empResponse.setCertificationName(employee.getCertificationName());
+         empResponse.setStatus(employee.getStatus());
+         return List.of(empResponse);
+      }
+      return Collections.emptyList();
     }
 }
