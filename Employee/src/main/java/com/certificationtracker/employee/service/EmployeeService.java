@@ -100,4 +100,15 @@ public class EmployeeService {
             employeeRepository.save(employee);
             return EmployeeMapper.toResponse(employee);
     }
+
+    public boolean deleteByEmployeeId(String id) {
+        Optional<Employee> optionalEmployee = employeeRepository.findByEmployeeId(id);
+        if (optionalEmployee.isEmpty()) {
+            log.info("Employee Id given does not exist");
+            throw new RuntimeException("Employee Not Found " + id);
+        }
+        Employee employee = optionalEmployee.get();
+        employeeRepository.delete(employee);
+        return true;
+    }
 }

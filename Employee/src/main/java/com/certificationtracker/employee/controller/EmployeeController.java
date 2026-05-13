@@ -2,6 +2,7 @@ package com.certificationtracker.employee.controller;
 
 import com.certificationtracker.dto.request.EmpRequest;
 import com.certificationtracker.dto.response.EmpResponse;
+import com.certificationtracker.employee.Entity.Employee;
 import com.certificationtracker.employee.service.EmployeeService;
 import com.certificationtracker.utils.CertificationStatus;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,12 @@ public class EmployeeController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<EmpResponse> updateByEmployeeId(@RequestBody EmpRequest request,@PathVariable("id") String id){
        EmpResponse empResponse= employeeService.updateByEmployeeId(request,id);
+       return ResponseEntity.ok(empResponse);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Boolean> deleteByEmployeeId(@PathVariable ("id") String id){
+       boolean empResponse= employeeService.deleteByEmployeeId(id);
        return ResponseEntity.ok(empResponse);
     }
 }
