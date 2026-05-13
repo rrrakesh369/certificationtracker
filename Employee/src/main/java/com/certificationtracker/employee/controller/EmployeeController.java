@@ -5,6 +5,7 @@ import com.certificationtracker.dto.response.EmpResponse;
 import com.certificationtracker.employee.service.EmployeeService;
 import com.certificationtracker.utils.CertificationStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,12 @@ public class EmployeeController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<EmpResponse> getEmployeeById(@PathVariable("id") String id){
        EmpResponse empResponse= employeeService.getEmployeeById(id);
+       return ResponseEntity.ok(empResponse);
+    }
+
+    @PutMapping
+    public ResponseEntity<EmpResponse> updateByEmployeeId(@RequestBody EmpRequest request, String id){
+       EmpResponse empResponse= employeeService.updateByEmployeeId(request,id);
        return ResponseEntity.ok(empResponse);
     }
 }
