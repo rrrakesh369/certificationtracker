@@ -36,8 +36,8 @@ public class EmployeeController {
        return ResponseEntity.ok(empResponse);
     }
 
-    @PutMapping
-    public ResponseEntity<EmpResponse> updateByEmployeeId(@RequestBody EmpRequest request, String id){
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<EmpResponse> updateByEmployeeId(@RequestBody EmpRequest request,@PathVariable("id") String id){
        EmpResponse empResponse= employeeService.updateByEmployeeId(request,id);
        return ResponseEntity.ok(empResponse);
     }
