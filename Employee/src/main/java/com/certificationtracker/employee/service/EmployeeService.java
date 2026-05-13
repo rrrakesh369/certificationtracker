@@ -55,17 +55,11 @@ public class EmployeeService {
             if (employee.getStatus() == CertificationStatus.ACTIVE) {
 
                 EmpResponse empResponse = new EmpResponse();
-
                 empResponse.setEmployeeId(employee.getEmployeeId());
-
                 empResponse.setIssuedDate(employee.getIssuedDate().atStartOfDay());
-
                 empResponse.setExpiryDate(employee.getExpiryDate().atStartOfDay());
-
                 empResponse.setCertificationName(employee.getCertificationName());
-
                 empResponse.setStatus(employee.getStatus());
-
                 responseList.add(empResponse);
             }
         }
