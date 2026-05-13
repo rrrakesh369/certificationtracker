@@ -12,7 +12,7 @@ public class EmployeeMapper {
     public static EmpResponse toResponse(Employee employee){
        CertificationStatus status= employee.getStatus();
 
-       if(employee.getIssuedDate().isBefore(LocalDate.now())) {
+        if(employee.getExpiryDate().isBefore(LocalDate.now())) {
           status= CertificationStatus.EXPIRED;
        }
            EmpResponse empResponse = new EmpResponse();

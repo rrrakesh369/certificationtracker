@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -24,11 +26,11 @@ public class EmployeeService {
             }
 
             Employee employee= new Employee();
-                employee.setEmployeeId(empRequest.getEmployeeId());
-              employee.setCertificationName(employee.getCertificationName());
-              employee.setExpiryDate(employee.getExpiryDate());
-              employee.setIssuedDate(employee.getIssuedDate());
-              employee.setStatus(employee.getStatus());
+             employee.setEmployeeId(empRequest.getEmployeeId());
+             employee.setCertificationName(empRequest.getCertificationName());
+             employee.setIssuedDate(LocalDate.parse(empRequest.getIssuedDate()));
+             employee.setExpiryDate(LocalDate.parse(empRequest.getExpiryDate()));
+             employee.setStatus(empRequest.getStatus());
             employeeRepository.save(employee);
             log.info("Employee {} is save", employee.getEmployeeId());
             return EmployeeMapper.toResponse(employee);
