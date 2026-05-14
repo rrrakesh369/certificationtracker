@@ -27,6 +27,11 @@ public class EmployeeService {
                 throw new DuplicateRequestException("Employee is not Exists" + empRequest.getEmployeeId());
             }
 
+            if(empRequest.getExpiryDate().isBefore(empRequest.getIssuedDate())
+            || empRequest.getExpiryDate().isEqual(empRequest.getIssuedDate())){
+                throw new IllegalArgumentException("Expiry date must be after issued date");
+            }
+
             Employee employee= new Employee();
              employee.setEmployeeId(empRequest.getEmployeeId());
              employee.setCertificationName(empRequest.getCertificationName());
