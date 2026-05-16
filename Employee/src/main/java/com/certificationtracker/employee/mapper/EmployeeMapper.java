@@ -20,7 +20,7 @@ public class EmployeeMapper {
            empResponse.setCertificationName(employee.getCertificationName());
            empResponse.setIssuedDate(employee.getIssuedDate().atStartOfDay());
            empResponse.setExpiryDate(employee.getExpiryDate().atStartOfDay());
-           empResponse.setStatus(employee.getStatus());
+           empResponse.setStatus(status);
            return empResponse;
 
     }

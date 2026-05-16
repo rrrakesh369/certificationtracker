@@ -44,20 +44,21 @@ public class EmployeeService {
     }
 
     public List<EmpResponse> getAllEmployee(CertificationStatus status) {
-
-        List<Employee> employees =
-                employeeRepository.findByStatus(status);
-
+        List<Employee> employees;
+        if(status==null){
+            employees=employeeRepository.findAll();
+        }else {
+             employees =employeeRepository.findByStatus(status);
+        }
         if (employees.isEmpty()) {
             log.info("Status not found");
             return Collections.emptyList();
         }
-
         List<EmpResponse> responseList = new ArrayList<>();
 
         for (Employee employee : employees) {
 
-            if (employee.getStatus() == CertificationStatus.ACTIVE) {
+//            if (employee.getStatus() == CertificationStatus.ACTIVE) {
 
                 EmpResponse empResponse = new EmpResponse();
                 empResponse.setEmployeeId(employee.getEmployeeId());
@@ -66,7 +67,7 @@ public class EmployeeService {
                 empResponse.setCertificationName(employee.getCertificationName());
                 empResponse.setStatus(employee.getStatus());
                 responseList.add(empResponse);
-            }
+//            }
         }
 
         return responseList;
